@@ -10,7 +10,7 @@ from widgets import *
 
 import random
 
-OSCILLOSCOPE_REFRESH_INTERVAL = 100
+OSCILLOSCOPE_REFRESH_INTERVAL = 20
 
 
         
@@ -22,9 +22,9 @@ class App(tk.Frame):
             #set the window position
             x,y = -1400,-650
         else:
-            #sur le pi
-            #self.root.attributes('-fullscreen', True)
-            x,y = -80,-34
+            #on the raspberry pi
+            self.root.attributes('-fullscreen', True)
+            x,y = 0,0
         self.w,self.h = 1280,800
         self.root.geometry('%dx%d+%d+%d' % (self.w, self.h, x, y))
         
@@ -37,7 +37,7 @@ class App(tk.Frame):
         
         
         self.oscilloscope = Oscilloscope(self.root)
-        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL)
+        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL * 5)
         self.p = 0.0
         self.increase_p = True
         
@@ -76,7 +76,7 @@ class App(tk.Frame):
         if self.destroy:
             self.root.destroy()
         else:
-            self.root.after(OSCILLOSCOPE_REFRESH_INTERVAL, self.on_timer)
+            self.root.after(OSCILLOSCOPE_REFRESH_INTERVAL , self.on_timer)
         
         
         #pressure

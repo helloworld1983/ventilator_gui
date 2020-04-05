@@ -9,6 +9,10 @@ $ git clone https://github.com/laffreux/ventilator_gui.git
 ## How to install dependencies:
 ```shell
 $ pip install matplotlib
+$ pip install tkinter
+on Linux use
+sudo apt-get install python-tk
+
 ```
 
 ## How to execute on windows:
