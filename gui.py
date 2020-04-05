@@ -10,7 +10,7 @@ from widgets import *
 
 import random
 
-OSCILLOSCOPE_REFRESH_INTERVAL = 20
+OSCILLOSCOPE_REFRESH_INTERVAL = 50
 
 
         
@@ -37,7 +37,7 @@ class App(tk.Frame):
         
         
         self.oscilloscope = Oscilloscope(self.root)
-        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL * 5)
+        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL * 3)
         self.p = 0.0
         self.increase_p = True
         
@@ -45,10 +45,10 @@ class App(tk.Frame):
         self.increase_v = True        
 
         #Tidal volume controls
-        tidal_volume = UpDownWidget(self.root, title = "Tv", xpos = 200, ypos = 650, default = 0.5, vmin = 0.2, vmax = 0.7, step = 0.05)
+        tidal_volume = UpDownWidget(self.root, title = "Tv", xpos = 300, ypos = 630, default = 0.5, vmin = 0.2, vmax = 0.7, step = 0.05)
 
         #Respiratory rate controls
-        rate = UpDownWidget(self.root, title = "RR", xpos = 900, ypos = 650, default = 10.0, vmin = 5, vmax = 40, step = 0.5)
+        rate = UpDownWidget(self.root, title = "RR", xpos = 800, ypos = 630, default = 10.0, vmin = 5, vmax = 40, step = 0.5)
         
 
 
