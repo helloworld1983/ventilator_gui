@@ -15,8 +15,9 @@ class App():
         self.root = tk.Tk()
         self.root.wm_title("Ventilator")
         if "nt" in os.name:
-            #Pour debug sur laptop avec 2e ecran
-            x,y = -1400,-650
+            #set the window position
+            #x,y = -1400,-650
+            x,y = 0,0
         else:
             #sur le pi
             #self.root.attributes('-fullscreen', True)
