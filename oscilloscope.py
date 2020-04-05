@@ -19,8 +19,16 @@ class Oscilloscope():
         
         self.ax1.autoscale(False)
         self.ax2.autoscale(False)  
+        #self.fig.subplots_adjust(left=0.05, bottom=0.1, right=0.98, wspace=0.2, hspace=0.2)
         
-
+        #Volume
+        txt = tk.Label(tkroot, text = "V", fg = "white", bg = "black", font=("Arial", 44))
+        txt.place(x = 10, y = 250)
+        
+        #Pressure
+        txt = tk.Label(tkroot, text = "P", fg = "white", bg = "black", font=("Arial", 44))
+        txt.place(x = 10, y = 450)
+        
         
         self.time_points = range(NB_POINTS)
         self.pressure_points = [0.0] * NB_POINTS
@@ -31,12 +39,12 @@ class Oscilloscope():
         self.ax1.clear()
         self.ax1.grid(True, color = 'dimgray')
         self.ax1.set(xlim = (0.0, NB_POINTS), ylim = (-0.2, 1.0))
-        self.ax1.plot(self.time_points, self.volume_points)
+        self.ax1.plot(self.time_points, self.volume_points, color = "red")
         
         self.ax2.clear()
         self.ax2.grid(True, color = 'dimgray')
         self.ax2.set(xlim = (0.0, NB_POINTS), ylim = (-50.0, 50.0))         
-        self.ax2.plot(self.time_points, self.pressure_points)  
+        self.ax2.plot(self.time_points, self.pressure_points, color = "blue")  
     def get_figure(self):
         return self.fig
     def add_pressure_sample(self, pressure):
