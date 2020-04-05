@@ -3,16 +3,13 @@ import tkinter as tk
 #import tkFont
 import os
 import math
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.backend_bases import key_press_handler
-from matplotlib.figure import Figure
 import matplotlib.animation as animation
-from matplotlib import style
 import numpy as np
+from oscilloscope import *
+import random
 
-
-
+OSCILLOSCOPE_REFRESH_INTERVAL = 100
+        
 class App():
     def __init__(self):
         self.root = tk.Tk()
@@ -32,18 +29,19 @@ class App():
         self.canvas = tk.Canvas(self.root, width=self.w, height=self.h, borderwidth=0, highlightthickness=0, bg="blue")
         #self.canvas.grid()
 
-        #plot
-        style.use('dark_background')
-        fig, (self.ax1, self.ax2) = plt.subplots(2, sharex=True)
-        canvas = FigureCanvasTkAgg(fig, master=self.root)  # A tk.DrawingArea.
-        canvas.draw()
-        #canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        canvas.get_tk_widget().pack(fill=tk.X)
-
+        self.oscilloscope = Oscilloscope(self.root)
+        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL)
+        self.p = 0.0
+        self.increase_p = True
         
- #       self.on_timer()       
-        ani = animation.FuncAnimation(fig, self.animate, interval = 1000)      
+        self.v = 0.0
+        self.increase_v = True        
+        
+        random.seed()
+        
+        self.on_timer()       
         self.root.mainloop()
+        
     def onKeyPress(self, e):
         print(ord(e.char))
         #exit on escape
@@ -51,25 +49,43 @@ class App():
             self.root.destroy()
 #        if e.char == "c":
 #            self.canvas.delete("tagvitesse")
-    def animate(self, i):
-        graph_data = open('samplefile.txt','r').read()
-        lines = graph_data.split('\n')
-        xs = []
-        ys = []
-        for line in lines:
-            if len(line) > 1:
-                x, y = line.split(',')
-                xs.append(int(x))
-                ys.append(int(y))
-        self.ax1.clear()
-        self.ax2.clear()
-        self.ax1.plot(xs, ys)
-        self.ax2.plot(xs, ys)
+
     
     def onLeftClick(self, e):
         self.root.destroy()
-#    def on_timer(self):
-#        self.root.after(1500, self.on_timer)
+    def on_timer(self):
+        self.root.after(OSCILLOSCOPE_REFRESH_INTERVAL, self.on_timer)
+        
+        
+        #pressure
+        if self.p > 25.0:
+            self.increase_p = False
+        elif self.p < -10.0:
+            self.increase_p = True
+            
+        if self.increase_p:
+            self.p += 2.0
+        else:
+            self.p -= 3.2
+        self.p += 5.0 * (random.random() - 0.5)
+            
+        self.oscilloscope.add_pressure_sample(self.p);    
+            
+            
+        #volume
+        if self.v > 0.5:
+            self.increase_v = False
+        elif self.v < 0.0:
+            self.increase_v = True
+            
+        if self.increase_v:
+            self.v += 0.02
+        else:
+            self.v -= 0.1            
+        self.v += 0.02 * (random.random() - 0.5)
+        
+        
+        self.oscilloscope.add_volume_sample(self.v);
         
 
 
