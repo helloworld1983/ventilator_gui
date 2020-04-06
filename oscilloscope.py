@@ -9,6 +9,12 @@ NB_POINTS = 50
 
 class Oscilloscope():
     def __init__(self, tkroot):
+
+        self.time_points = range(NB_POINTS)
+        self.pressure_points = [0.0] * NB_POINTS
+        self.volume_points = [0.0] * NB_POINTS
+
+
         #plot
         style.use('dark_background')
         self.fig, (self.ax1, self.ax2) = plt.subplots(2, sharex=True)
@@ -24,8 +30,12 @@ class Oscilloscope():
         self.ax1.grid(True, color = 'dimgray')
         self.ax2.grid(True, color = 'dimgray')
         self.ax1.set(xlim = (0.0, NB_POINTS), ylim = (-0.2, 1.0))
-        self.ax2.set(xlim = (0.0, NB_POINTS), ylim = (-50.0, 50.0))         
-        
+        self.ax2.set(xlim = (0.0, NB_POINTS), ylim = (-50.0, 50.0))
+       
+
+        self.line1, = self.ax1.plot(self.volume_points, color = "red")
+        self.line2, = self.ax2.plot(self.pressure_points, color = "blue")
+
         
         #Volume
         txt = tk.Label(tkroot, text = "V", fg = "white", bg = "black", font=("Arial", 44))
@@ -40,19 +50,21 @@ class Oscilloscope():
         txt = tk.Label(tkroot, text = "[cm H2O]", fg = "gray", bg = "black", font=("Arial", 14))
         txt.place(x = 30, y = 500)        
         
-        self.time_points = range(NB_POINTS)
-        self.pressure_points = [0.0] * NB_POINTS
-        self.volume_points = [0.0] * NB_POINTS
      
     def animate(self, i):
-        if len(self.ax1.lines) > 0:
-            self.ax1.lines[0].remove()        
-        self.ax1.plot(self.time_points, self.volume_points, color = "red")
+        #if len(self.ax1.lines) > 0:
+        #    self.ax1.lines[0].remove()
+
+        self.line1.set_ydata(self.volume_points)
+        #self.ax1.plot(self.volume_points, color = "red")
         
-        if len(self.ax2.lines) > 0:
-            self.ax2.lines[0].remove()
+        #if len(self.ax2.lines) > 0:
+        #    self.ax2.lines[0].remove()
         
-        self.ax2.plot(self.time_points, self.pressure_points, color = "blue")  
+        self.line2.set_ydata(self.pressure_points)
+
+        #self.ax2.plot(self.pressure_points, color = "blue")  
+        return self.line1, self.line2
     def get_figure(self):
         return self.fig
     def add_pressure_sample(self, pressure):

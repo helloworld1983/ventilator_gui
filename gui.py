@@ -37,7 +37,7 @@ class App(tk.Frame):
         
         
         self.oscilloscope = Oscilloscope(self.root)
-        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL * 3)
+        ani = animation.FuncAnimation(self.oscilloscope.get_figure(), self.oscilloscope.animate, interval = OSCILLOSCOPE_REFRESH_INTERVAL * 1, blit = True)
         self.p = 0.0
         self.increase_p = True
         
